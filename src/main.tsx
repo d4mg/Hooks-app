@@ -6,11 +6,14 @@ import { createRoot } from 'react-dom/client'
 // import { TrafficLightWithEffect } from './02-useEffect/TrafficLightWithEffect'
 
 import './index.css'
+import { InstagromApp } from './07-useOptimistic/instagromApp'
+// import { MemoHook } from './06-memos/MemoHook'
 // import { TasksApp } from './05-useReducer/TaskApp'
-import { ScrambleWords } from './05-useReducer/ScrambleWords'
+// import { ScrambleWords } from './05-useReducer/ScrambleWords'
 // import { FocusScreen } from './04-useRef/FocusScreen'
 // import { TrafficLightWithHook } from './02-useEffect/TrafficLightWithHook'
 // import { PokemonPage } from './03-examples/PokemonPage'
+// import { MemoCounter } from './06-memos/MemoCounter';
 
 
 
@@ -23,6 +26,9 @@ createRoot(document.getElementById('root')!).render(
     {/* <PokemonPage /> */}
     {/* <FocusScreen /> */}
     {/* <TasksApp/> */}
-    <ScrambleWords/>
+    {/* <ScrambleWords/> */}
+    {/* <MemoHook/> */}
+    {/* <MemoCounter/> */}
+    <InstagromApp/>
   </StrictMode>,
 )
