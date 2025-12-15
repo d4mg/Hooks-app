@@ -1,12 +1,14 @@
-import { StrictMode } from 'react'
+import { StrictMode, Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
+import { Toaster } from 'sonner'
+
 
 // import { HooksApp } from './HooksApp'
 // import { TrafficLight } from './01-useState/TrafficLight'
 // import { TrafficLightWithEffect } from './02-useEffect/TrafficLightWithEffect'
 
 import './index.css'
-import { InstagromApp } from './07-useOptimistic/instagromApp'
+// import { InstagromApp } from './07-useOptimistic/instagromApp'
 // import { MemoHook } from './06-memos/MemoHook'
 // import { TasksApp } from './05-useReducer/TaskApp'
 // import { ScrambleWords } from './05-useReducer/ScrambleWords'
@@ -14,11 +16,14 @@ import { InstagromApp } from './07-useOptimistic/instagromApp'
 // import { TrafficLightWithHook } from './02-useEffect/TrafficLightWithHook'
 // import { PokemonPage } from './03-examples/PokemonPage'
 // import { MemoCounter } from './06-memos/MemoCounter';
+import { ClientInformation } from './08-use-supense/ClientInformation';
+import { getUserAction } from './08-use-supense/api/get-user.action';
 
 
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
+    <Toaster/>
     {/* <HooksApp/> */}
     {/* <TrafficLight/> */}
     {/* <TrafficLightWithEffect/> */}
@@ -29,6 +34,14 @@ createRoot(document.getElementById('root')!).render(
     {/* <ScrambleWords/> */}
     {/* <MemoHook/> */}
     {/* <MemoCounter/> */}
-    <InstagromApp/>
+    {/* <InstagromApp/> */}
+    <Suspense fallback={(
+      <div className='bg-gradient flex flex-col'>
+        <h1 className='text-2xl font-bold'>Cargado...</h1>
+      </div>
+    )}>
+      <ClientInformation getUser={getUserAction(1000)}/>
+    </Suspense>
+    
   </StrictMode>,
 )

@@ -1,4 +1,6 @@
-import { useOptimistic, useState } from 'react';
+import { useOptimistic, useState, useTransition } from 'react';
+import { toast } from 'sonner';
+
 
 interface Comment {
   id: number;
@@ -6,16 +8,21 @@ interface Comment {
   optimistic?: boolean;
 }
 
+let lastId = 2;
+
 export const InstagromApp = () => {
+
+    const [isPending, startTransition] = useTransition()
+
   const [comments, setComments] = useState<Comment[]>([
     { id: 1, text: '¡Gran foto!' },
     { id: 2, text: 'Me encanta 🧡' },
   ]);
 
    const [ optimisticComments, addOptimisticComment ] = useOptimistic(comments, (currentComments, newCommentText: string) => {
-
+    lastId++;
     return[...currentComments,{
-        id: new Date().getTime(),
+        id: lastId,
         text: newCommentText,
         optimistic: true
     }]
@@ -25,15 +32,30 @@ export const InstagromApp = () => {
     const messageText = formData.get('post-message') as string;
 
     addOptimisticComment(messageText);
-    
+
+    startTransition(async() => {    
 
 // Simular la peticion HTTP al servidor 
     await new Promise((resolve) => setTimeout(resolve, 3000));
 
-    setComments(prev => [...prev, {
-        id: new Date().getTime(),
-        text: messageText,
-    }])
+    // setComments(prev => [...prev, {
+    //     id: new Date().getTime(),
+    //     text: messageText,
+    //     },
+    //  ]);
+
+    // ! Este seria el codigo para revertir el proceso  es decir suponemos si falla
+    setComments( (prev) => prev);
+    toast('Error al agregar el comentario',{
+        description: 'Intente nuevamente',
+        duration:10_000,
+        position:'top-right',
+        action:{
+            label:'Cerrar',
+            onClick: () => toast.dismiss(),
+        }
+    })
+   });
   };
 
   // ✅ EL RETURN DEL COMPONENTE
@@ -80,6 +102,7 @@ export const InstagromApp = () => {
         />
         <button
           type="submit"
+          disabled={isPending}
           className="bg-blue-500 text-white p-2 rounded-md w-full"
         >
           Enviar
